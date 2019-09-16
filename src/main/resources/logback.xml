@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration debug="true">
+	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
+	<property name="LOG_HOME" value="./logs" />
+	<property name="PATTERN"
+		value="%d{yyyy-MM-dd HH:mm:ss.SSS}-[%thread] %-5level	%logger{50}-%msg%n" />
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>${PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	
+	<!-- 按照每天生成日志文件 -->
+	<appender name="ALL_LOG_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>${LOG_HOME}/all_%d{yyyyMMdd}_%i.log
+			</FileNamePattern>
+			<!-- each file should be at most 100MB, keep 60 days worth of history, 
+				but at most 20GB -->
+			<maxFileSize>10MB</maxFileSize>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>${PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<!-- 按照每天生成日志文件 -->
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>${LOG_HOME}/sale_%d{yyyyMMdd}_%i.log
+			</FileNamePattern>
+			<!-- each file should be at most 100MB, keep 60 days worth of history, 
+				but at most 20GB -->
+			<maxFileSize>10MB</maxFileSize>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>${PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+	<appender name="TASK_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>${LOG_HOME}/task_%d{yyyyMMdd}_%i.log
+			</FileNamePattern>
+			<!-- each file should be at most 100MB, keep 60 days worth of history, 
+				but at most 20GB -->
+			<maxFileSize>10MB</maxFileSize>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>${PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="SQL_FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!--日志文件输出的文件名 -->
+			<FileNamePattern>${LOG_HOME}/sql_%d{yyyyMMdd}_%i.log
+			</FileNamePattern>
+			<!-- each file should be at most 100MB, keep 60 days worth of history, 
+				but at most 20GB -->
+			<maxFileSize>10MB</maxFileSize>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度%msg：日志消息，%n是换行符 -->
+			<pattern>${PATTERN}</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<!--myibatis log configure -->
+	<logger name="com.ydy.service" level="INFO">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="com.ydy.interceptor" level="INFO">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="com.ydy.controller" level="INFO">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="com.ydy.filter" level="INFO">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="com.ydy.aspect" level="INFO">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="com.ydy.configuration" level="INFO">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="com.ydy.utils" level="INFO">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="com.ydy.remote" level="INFO">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="com.ydy.threadpool" level="INFO">
+		<appender-ref ref="FILE" />
+	</logger>
+	<logger name="com.ydy.mapper" level="DEBUG">
+		<appender-ref ref="SQL_FILE" />
+	</logger>
+	<logger name="com.ydy.task" level="INFO">
+		<appender-ref ref="TASK_FILE" />
+	</logger>
+
+	<!-- 日志输出级别 -->
+	<root level="INFO">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="ALL_LOG_FILE" />
+	</root>
+</configuration>

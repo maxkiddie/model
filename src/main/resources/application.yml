@@ -1,0 +1,108 @@
+spring:
+    profiles:
+        #只要修改active即可修改启动环境
+        active: prod
+    resources:
+        #访问静态资源目录
+        static-locations: ${web_location}
+        cache:
+            cachecontrol:
+               no-cache: false
+               max-age: 864000 #缓存10天
+    servlet:
+        multipart:
+            enabled: true
+            maxFileSize: 10MB
+            maxRequestSize: 10MB
+            resolve-lazily: true
+    mail:
+        host: ${mail_host}
+        username: ${mail_username}
+        password: ${mail_password}
+        default-encoding: UTF-8
+        #配置下面这一段是因为阿里云封禁了25端口转发
+        port: 465
+        properties:
+            mail:
+               smtp:
+                   socketFactory:
+                       class: javax.net.ssl.SSLSocketFactory    jackson:
+        date-format: yyyy-MM-dd HH:mm:ss #json日期格式
+        time-zone: GMT+8 #北京时间 
+    datasource:
+           # 使用druid数据源
+        druid:
+           name: test
+           url: ${mysql_url}
+           username: ${mysql_username}
+           password: ${mysql_pwd}
+           db-type: com.alibaba.druid.pool.DruidDataSource
+           driverClassName: com.mysql.cj.jdbc.Driver
+           #初始化连接大小
+           initial-size: 5
+           #最小
+           min-idle: 5
+           #最大
+           max-active: 20
+           #配置获取连接等待超时的时间
+           max-wait: 60000
+           # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+           time-between-eviction-runs-millis: 60000
+           # 配置一个连接在池中最小生存的时间，单位是毫秒
+           min-evictable-idle-time-millis: 300000
+           validation-query: SELECT 1 FROM DUAL
+           test-while-idle: true
+           test-on-borrow: false
+           test-on-return: false
+           # 打开PSCache，并且指定每个连接上PSCache的大小
+           pool-prepared-statements: true
+           max-pool-prepared-statement-per-connection-size: 20
+           # 合并多个DruidDataSource的监控数据
+           use-global-data-source-stat: true
+           # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+           filter:
+              commons-log.connection-logger-name: stat,wall,log4j
+              stat:
+                log-slow-sql: true
+                slow-sql-millis: 2000
+
+    redis:
+      host: ${redis_ip}
+      port: ${redis_port}
+      password: ${redis_password}
+      lettuce:
+         pool:
+           #连接池最大连接数，负数表示不限制
+           max-active: 20
+           #连接池最大空闲连接数，负数表示不限制 
+           max-idle: 10
+           #等待可用连接的最大时间，负数不限制
+           max-wait: -1ms
+           #连接池最小空闲连接数
+           min-idle: 5
+         shutdownTimeout: 100ms
+mybatis:
+    mapper-locations: classpath:mapping/*.xml
+    type-aliases-package: com.ydy.model
+    configuration:
+         map-underscore-to-camel-case: true
+  
+mapper:
+    identity: mysql
+    not-empty: true
+    enum-as-simple-type: true
+    
+#pagehelper
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+    
+server:
+    port: ${server_port}
+    max-http-header-size: 4048576
+    compression:
+        enabled: ${gzip}
+        mime-types: application/json,text/css,application/javascript,text/html,text/xml,text/plain
+        min-response-size: 1024
