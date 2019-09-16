@@ -32,6 +32,6 @@ public class TableController {
 
 	@GetMapping("javaModel")
 	public ResponseEntity<String> javaModel(@CtrlParam String tableSchema, @CtrlParam String tableName) {
-		return ResponseEntity.ok(tableService.toJavaModel(tableService.listColumns(tableSchema, tableName)));
+		return ResponseEntity.ok(tableService.toJavaModel(tableSchema, tableName));
 	}
 }

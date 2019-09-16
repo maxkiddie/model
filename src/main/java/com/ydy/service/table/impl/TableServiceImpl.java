@@ -42,11 +42,18 @@ public class TableServiceImpl implements TableService {
 	}
 
 	@Override
-	public String toJavaModel(List<TableColumns> list) {
+	public String toJavaModel(String tableSchema, String tableName) {
+		List<TableColumns> list = listColumns(tableSchema, tableName);
 		if (CollectionUtils.isEmpty(list)) {
 			throw new BusinessException(EnumTable.COLUMNS_LIST_EMPTY);
 		}
 		StringBuilder builder = new StringBuilder();
+		builder.append("@Table(name = \"" + tableSchema + "." + tableName + "\")");
+		builder.append("\n");
+		builder.append("public class " + CharUtil.upperFirstLatter(CharUtil.lineToHump(tableName)) + "{");
+		builder.append("\n");
+		builder.append("@Id\n" + "@GeneratedValue(strategy = GenerationType.IDENTITY)");
+		builder.append("\n");
 		for (TableColumns columns : list) {
 			builder.append("private ");
 			builder.append(MysqlColumnTypeEnum.to(columns.getDataType()) + " ");
@@ -55,6 +62,7 @@ public class TableServiceImpl implements TableService {
 			builder.append(columns.getColumnComment());
 			builder.append("\n");
 		}
+		builder.append("}\n");
 		System.out.println(builder.toString());
 		return builder.toString();
 	}

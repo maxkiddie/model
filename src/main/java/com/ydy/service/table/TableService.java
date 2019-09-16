@@ -11,5 +11,5 @@ public interface TableService {
 
 	List<TableColumns> listColumns(String tableSchema, String tableName);
 
-	String toJavaModel(List<TableColumns> list);
+	String toJavaModel(String tableSchema, String tableName);
 }
